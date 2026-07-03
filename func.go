@@ -374,7 +374,7 @@ func keys(v map[string]any) []string {
 		w[i] = k
 		i++
 	}
-	sort.Strings(w)
+	slices.Sort(w)
 	return w
 }
 
@@ -1291,8 +1291,8 @@ func sortItems(name string, v, x any) ([]*sortItem, error) {
 	for i, v := range vs {
 		items[i] = &sortItem{v, xs[i]}
 	}
-	sort.SliceStable(items, func(i, j int) bool {
-		return Compare(items[i].key, items[j].key) < 0
+	slices.SortStableFunc(items, func(x, y *sortItem) int {
+		return Compare(x.key, y.key)
 	})
 	return items, nil
 }

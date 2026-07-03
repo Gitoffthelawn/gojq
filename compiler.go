@@ -1,10 +1,11 @@
 package gojq
 
 import (
+	"cmp"
 	"context"
 	"errors"
 	"fmt"
-	"sort"
+	"slices"
 	"strconv"
 	"strings"
 	"sync"
@@ -1194,9 +1195,8 @@ func (c *compiler) funcBuiltins(any, []any) any {
 			}
 		}
 	}
-	sort.Slice(xs, func(i, j int) bool {
-		return xs[i].name < xs[j].name ||
-			xs[i].name == xs[j].name && xs[i].arity < xs[j].arity
+	slices.SortFunc(xs, func(x, y *funcNameArity) int {
+		return cmp.Or(cmp.Compare(x.name, y.name), cmp.Compare(x.arity, y.arity))
 	})
 	ys := make([]any, len(xs))
 	for i, x := range xs {
@@ -1256,9 +1256,8 @@ func listModuleDefs(q *Query) []any {
 			xs = append(xs, &funcNameArity{fd.Name, len(fd.Args)})
 		}
 	}
-	sort.Slice(xs, func(i, j int) bool {
-		return xs[i].name < xs[j].name ||
-			xs[i].name == xs[j].name && xs[i].arity < xs[j].arity
+	slices.SortFunc(xs, func(x, y *funcNameArity) int {
+		return cmp.Or(cmp.Compare(x.name, y.name), cmp.Compare(x.arity, y.arity))
 	})
 	defs := make([]any, len(xs))
 	for i, x := range xs {

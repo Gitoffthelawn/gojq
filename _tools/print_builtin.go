@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 	"reflect"
-	"sort"
+	"slices"
 	"strings"
 
 	"github.com/itchyny/gojq"
@@ -29,7 +29,7 @@ func main() {
 		names[i] = n
 		i++
 	}
-	sort.Strings(names)
+	slices.Sort(names)
 	for _, n := range names {
 		var sb strings.Builder
 		for _, fd := range fds[n] {
