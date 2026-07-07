@@ -1,6 +1,5 @@
 # gojq
-[![CI Status](https://github.com/itchyny/gojq/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/itchyny/gojq/actions?query=branch:main)
-[![Go Report Card](https://goreportcard.com/badge/github.com/itchyny/gojq)](https://goreportcard.com/report/github.com/itchyny/gojq)
+[![CI Status](https://github.com/itchyny/gojq/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/itchyny/gojq/actions/workflows/ci.yaml?query=branch%3Amain)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/itchyny/gojq/blob/main/LICENSE)
 [![release](https://img.shields.io/github/release/itchyny/gojq/all.svg)](https://github.com/itchyny/gojq/releases)
 [![pkg.go.dev](https://pkg.go.dev/badge/github.com/itchyny/gojq)](https://pkg.go.dev/github.com/itchyny/gojq)
