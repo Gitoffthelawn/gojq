@@ -86,14 +86,11 @@ loop:
 			env.pushfork(pc)
 		case opforktrybegin:
 			if backtrack {
-				if err == nil {
-					break loop
-				}
 				switch e := err.(type) {
 				case *tryEndError:
 					err = e.err
 					break loop
-				case *breakError, *HaltError:
+				case nil, *breakError, *HaltError:
 					break loop
 				case ValueError:
 					env.pop()
@@ -116,7 +113,8 @@ loop:
 			env.pushfork(pc)
 		case opforkalt:
 			if backtrack {
-				if err == nil {
+				switch err.(type) {
+				case nil, *breakError, *HaltError:
 					break loop
 				}
 				pc, backtrack, err = code.v.(int), false, nil
