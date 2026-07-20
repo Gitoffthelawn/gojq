@@ -154,7 +154,7 @@ func main() {
 - [`gojq.WithInputIter`](https://pkg.go.dev/github.com/itchyny/gojq#WithInputIter) allows to use `input` and `inputs` functions. By default, these functions are disabled.
 
 ## Bug Tracker
-Report bug at [Issues・itchyny/gojq - GitHub](https://github.com/itchyny/gojq/issues).
+Report bugs at [Issues - itchyny/gojq - GitHub](https://github.com/itchyny/gojq/issues).
 
 ## Author
 itchyny (<https://github.com/itchyny>)
