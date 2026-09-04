@@ -132,18 +132,13 @@ func (c *compiler) compile(q *Query) error {
 }
 
 func (c *compiler) compileImport(i *Import) error {
-	var path, alias string
-	var err error
-	if i.ImportPath != "" {
-		path, alias = i.ImportPath, i.ImportAlias
-	} else {
-		path = i.IncludePath
-	}
+	path, alias := cmp.Or(i.ImportPath, i.IncludePath), i.ImportAlias
 	if c.moduleLoader == nil {
 		return fmt.Errorf("cannot load module: %q", path)
 	}
 	if strings.HasPrefix(alias, "$") {
 		var vals any
+		var err error
 		if moduleLoader, ok := c.moduleLoader.(interface {
 			LoadJSONWithMeta(string, map[string]any) (any, error)
 		}); ok {
@@ -166,6 +161,7 @@ func (c *compiler) compileImport(i *Import) error {
 		return nil
 	}
 	var q *Query
+	var err error
 	if moduleLoader, ok := c.moduleLoader.(interface {
 		LoadModuleWithMeta(string, map[string]any) (*Query, error)
 	}); ok {
@@ -1273,11 +1269,7 @@ func listModuleDeps(q *Query) []any {
 		if v == nil {
 			v = make(map[string]any)
 		}
-		relpath := i.ImportPath
-		if relpath == "" {
-			relpath = i.IncludePath
-		}
-		v["relpath"] = relpath
+		v["relpath"] = cmp.Or(i.ImportPath, i.IncludePath)
 		if i.ImportAlias != "" {
 			v["as"] = strings.TrimPrefix(i.ImportAlias, "$")
 		}

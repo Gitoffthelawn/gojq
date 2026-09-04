@@ -14,7 +14,6 @@ import (
 	"reflect"
 	"regexp"
 	"slices"
-	"sort"
 	"strconv"
 	"strings"
 	"sync"
@@ -438,9 +437,7 @@ func add(xs iter.Seq[any]) any {
 		case []any:
 			switch w := v.(type) {
 			case nil:
-				s := make([]any, len(x))
-				copy(s, x)
-				v = s
+				v = slices.Clone(x)
 				continue
 			case []any:
 				v = append(w, x...)
@@ -772,8 +769,6 @@ func funcSplit(v, x any) any {
 	return splitString(s, t)
 }
 
-// splitString implements both split/1 and the division operator on strings.
-// An empty input string yields an empty array, not a single empty string.
 func splitString(s, t string) []any {
 	if s == "" {
 		return []any{}
@@ -1839,10 +1834,8 @@ func funcBsearch(v, t any) any {
 	if !ok {
 		return &func1TypeError{"bsearch", v, t}
 	}
-	i := sort.Search(len(vs), func(i int) bool {
-		return Compare(vs[i], t) >= 0
-	})
-	if i < len(vs) && Compare(vs[i], t) == 0 {
+	i, ok := slices.BinarySearchFunc(vs, t, Compare)
+	if ok {
 		return i
 	}
 	return -i - 1

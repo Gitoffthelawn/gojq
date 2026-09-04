@@ -1,6 +1,7 @@
 package gojq
 
 import (
+	"cmp"
 	"context"
 	"strings"
 )
@@ -879,11 +880,7 @@ func (e *ConstObject) ToValue() map[string]any {
 	}
 	v := make(map[string]any, len(e.KeyVals))
 	for _, e := range e.KeyVals {
-		key := e.Key
-		if key == "" {
-			key = e.KeyString
-		}
-		v[key] = e.Val.toValue()
+		v[cmp.Or(e.Key, e.KeyString)] = e.Val.toValue()
 	}
 	return v
 }
