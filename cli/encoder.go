@@ -10,6 +10,7 @@ import (
 	"math/big"
 	"slices"
 	"strconv"
+	"strings"
 	"unicode/utf8"
 )
 
@@ -195,7 +196,7 @@ func (e *encoder) encodeObject(vs map[string]any) error {
 		i++
 	}
 	slices.SortFunc(kvs, func(x, y keyVal) int {
-		return cmp.Compare(x.key, y.key)
+		return strings.Compare(x.key, y.key)
 	})
 	for i, kv := range kvs {
 		if i > 0 {

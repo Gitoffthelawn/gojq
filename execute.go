@@ -1,11 +1,11 @@
 package gojq
 
 import (
-	"cmp"
 	"context"
 	"math"
 	"reflect"
 	"slices"
+	"strings"
 )
 
 func (env *env) execute(bc *Code, v any, vars ...any) Iter {
@@ -297,7 +297,7 @@ loop:
 					i++
 				}
 				slices.SortFunc(xs, func(x, y pathValue) int {
-					return cmp.Compare(x.path.(string), y.path.(string))
+					return strings.Compare(x.path.(string), y.path.(string))
 				})
 			case Iter:
 				if w, ok := v.Next(); ok {

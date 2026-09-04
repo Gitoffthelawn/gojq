@@ -2,7 +2,6 @@ package gojq
 
 import (
 	"bytes"
-	"cmp"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -179,7 +178,7 @@ func (e *encoder) encodeObject(vs map[string]any) {
 		i++
 	}
 	slices.SortFunc(kvs, func(x, y keyVal) int {
-		return cmp.Compare(x.key, y.key)
+		return strings.Compare(x.key, y.key)
 	})
 	for i, kv := range kvs {
 		if i > 0 {
