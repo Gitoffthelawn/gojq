@@ -26,7 +26,7 @@ builtin.go: builtin.jq parser.go.y parser.go query.go operator.go _tools/*
 
 .SUFFIXES:
 parser.go: parser.go.y $(GOBIN)/goyacc
-	goyacc -o $@ $<
+	goyacc -l -o $@ $<
 
 $(GOBIN)/goyacc:
 	@go install golang.org/x/tools/cmd/goyacc@latest

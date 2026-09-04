@@ -1,19 +1,7 @@
 %{
 package gojq
 
-func reverseFuncDef(xs []*FuncDef) []*FuncDef {
-	for i, j := 0, len(xs)-1; i < j; i, j = i+1, j-1 {
-		xs[i], xs[j] = xs[j], xs[i]
-	}
-	return xs
-}
-
-func prependFuncDef(xs []*FuncDef, x *FuncDef) []*FuncDef {
-	xs = append(xs, nil)
-	copy(xs[1:], xs)
-	xs[0] = x
-	return xs
-}
+import "slices"
 %}
 
 %union {
@@ -102,7 +90,9 @@ meta
 body
     : funcdefs
     {
-        $$ = &Query{FuncDefs: reverseFuncDef($1.([]*FuncDef))}
+        funcdefs := $1.([]*FuncDef)
+        slices.Reverse(funcdefs)
+        $$ = &Query{FuncDefs: funcdefs}
     }
     | query
 
@@ -144,7 +134,7 @@ query
     : funcdef query %prec tokFuncDefQuery
     {
         query := $2.(*Query)
-        query.FuncDefs = prependFuncDef(query.FuncDefs, $1.(*FuncDef))
+        query.FuncDefs = slices.Insert(query.FuncDefs, 0, $1.(*FuncDef))
         $$ = query
     }
     | query '|' query
